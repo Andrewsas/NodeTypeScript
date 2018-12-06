@@ -1,0 +1,36 @@
+{
+  "name": "nodetype",
+  "version": "1.0.0",
+  "description": "Estrutura inicial do projeto node com TypeScript",
+  "main": "server/server.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node ./server/server.ts",
+    "start": "nodemon ./dist/server.js",
+    "prod": "npm run build && npm run start"
+  },
+  "keywords": [
+    "API",
+    "REST",
+    "TypeScript",
+    "Node"
+  ],
+  "author": "Andrew Santos",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mongodb": "^3.1.17",
+    "body-parse": "^0.1.0",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10",
+    "morgan": "^1.9.1",
+    "pg": "^7.6.1",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.0",
+    "@types/morgan": "^1.7.35",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  }
+}
