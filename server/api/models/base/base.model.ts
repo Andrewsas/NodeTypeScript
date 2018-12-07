@@ -1,7 +1,8 @@
 export class BaseModel {
-    _id: string;
-    dt_create: Date;
-    dt_update: Date;
-
+    public _id: string;
+    public dt_create: Date;
+    public dt_update: Date;
+    
     constructor() {}
+
 }

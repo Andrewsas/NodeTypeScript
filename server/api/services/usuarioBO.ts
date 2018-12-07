@@ -1,8 +1,10 @@
 import { Service } from './base/service';
+import { dbConnection } from '../../config/dbConnection';
 
 export class UsuarioBO extends Service {
 
-    constructor() {
-        super('usuario');
+    constructor(app) {
+        super(dbConnection(), 'usuario');
     }
+
 }
