@@ -3,6 +3,6 @@ export interface IService {
     getOne(id: string);
     getSearch(data: any);
     create(data: any);
-    update(id: string);
+    update(id: string, data: any);
     delete(id: string);
 }

@@ -2,14 +2,13 @@ import * as morgan from 'morgan';
 import * as express from 'express';
 import { Application } from 'express';
 import * as bodyParser from 'body-parser';
+import consign = require('consign');
 
-import Usuario from '../routes/usuario';
-import { errorHandlerApi } from './errorHandlerApi';
-
+import Usuario from '../api/routes/usuario';
+import { errorHandlerApi } from '../api/util/errorHandlerApi';
 
 class Api {
-
-    public express: Application
+    public express: Application;
 
     constructor() {
         this.express = express();
