@@ -22,7 +22,6 @@ export class Service implements IService {
 
   public getOne = (id: string) => {
     return new Promise((resolve, reject) => {
-      if (!ObjectId.isValid(id)) return reject({ msg: 'ID_INVALID' });
       this.connection().then(connection => {
         const collection = connection.collection(this.collection);
         collection.find(new ObjectId(id)).toArray((error, result) => {
@@ -71,7 +70,6 @@ export class Service implements IService {
 
   public update = (id: string, data: any) => {
     return new Promise((resolve, reject) => {
-      if (!ObjectId.isValid(id)) return reject({ msg: 'ID_INVALID' });
       this.connection().then(connection => {
         const collection = connection.collection(this.collection);
         collection.update(
@@ -93,7 +91,6 @@ export class Service implements IService {
 
   public delete = (id: string) => {
     return new Promise((resolve, reject) => {
-      if (!ObjectId.isValid(id)) return reject({ msg: 'ID_INVALID' });
       this.connection().then(connection => {
         const collection = connection.collection(this.collection);
         collection.deleteOne({ _id: new ObjectId(id) }, (error, result) => {
