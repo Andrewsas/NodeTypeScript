@@ -13,7 +13,10 @@ export class Routes {
     }
 
     getRoutes(app: Application, path: PathParams): void {
-        app.route(`/${path}`).get((req: Request, res: Response) => this.service.getAll().then((result) => res.status(200).json(result)).catch(e => res.json(e)));
+        app.route(`/${path}`).get((req: Request, res: Response) => {
+            console.log(`aqui`) 
+            this.service.getAll().then((result) => res.status(200).json(result)).catch(e => res.json(e))
+        });
         app.route(`/${path}/search`).get((req: Request, res: Response) => this.service.getSearch(req.query).then((result) => res.status(200).json(result)).catch(e => res.json(e)));
         app.route(`/${path}/:id`).get((req: Request, res: Response) => this.service.getOne(req.params.id).then((result) => res.status(200).json(result)).catch(e => res.json(e)));
         app.route(`/${path}`).post((req: Request, res: Response) => this.service.create(req.body).then((result) => res.status(204).json()).catch(e => res.json(e)));
