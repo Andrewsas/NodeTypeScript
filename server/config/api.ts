@@ -5,6 +5,8 @@ import * as bodyParser from 'body-parser';
 import * as expressValidator from 'express-validator';
 
 import Routes from '../api/routes/routes.intance';
+
+import { interceptor } from '../api/util/interceptor';
 import { errorHandlerApi } from '../api/util/errorHandlerApi';
 
 class Api {
@@ -21,6 +23,7 @@ class Api {
         this.express.use(bodyParser.json());
         this.express.use(expressValidator());
         this.express.use(errorHandlerApi);
+        this.express.use(interceptor);
         this.router(this.express);
     }
 
