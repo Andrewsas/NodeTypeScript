@@ -2,7 +2,8 @@ import { ObjectId } from 'mongodb';
 import { IService } from './iservice';
 
 export class Service implements IService {
-  constructor(public connection, public collection: string) {}
+  constructor(
+    public connection, public collection: string) {}
 
   public getAll = () => {
     return new Promise((resolve, reject) => {

@@ -1,20 +1,17 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "pretty": true,
-        "sourceMap": false,
-        "target": "es6",
-        "outDir": "./dist",
-        "baseUrl": "./server"
-    },
-    "include": [
-        "server/**/*.ts",
-        "server/*.ts",
-    ],
-    "exclude": [
-        "node_modules"
-    ],
-    "compileOnSave": true,
-    "buildOnSave": true
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "pretty": true,
+    "sourceMap": false,
+    "target": "es6",
+    "outDir": "./dist",
+    "baseUrl": "./server",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": ["server/**/*.ts", "server/*.ts"],
+  "exclude": ["node_modules"],
+  "compileOnSave": true,
+  "buildOnSave": true
 }
