@@ -1,6 +1,4 @@
-import { Application } from 'express';
 import { Routes } from './base/routes'
-import { UsuarioBO } from '../services/usuarioBO';
 import { UsuarioModel } from '../models/usuario.model';
 import { UsuarioControl } from '../controller/usuario.control';
 

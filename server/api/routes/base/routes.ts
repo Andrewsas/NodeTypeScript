@@ -7,7 +7,7 @@ export class Routes {
     constructor(
         private app: Application,
         private path: PathParams,
-        private controller: Controller
+        private controller: Controller<any>
     ) {
         this.getRoutes(this.app, this.path);
     }
@@ -24,6 +24,9 @@ export class Routes {
         });
         app.route(`/${path}`).post((req: Request, res: Response) => {
             this.controller.create(req, res)    
+        });
+        app.route(`/${path}/collection`).post((req: Request, res: Response) => {
+            this.controller.createConllection(req, res)    
         });
         app.route(`/${path}/:id`).put((req: Request, res: Response) => {
             this.controller.update(req, res)    

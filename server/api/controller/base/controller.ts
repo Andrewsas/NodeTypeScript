@@ -8,7 +8,7 @@ import { Service } from 'api/services/base/service';
 import { BaseModel } from 'api/models/base/base.model';
 
 export class Controller<TModel extends BaseModel> implements IController {
-  constructor(private service: Service, public modelType: new () => TModel,) {}
+  constructor(private service: Service, public modelType: new () => TModel) {}
 
   public getAll = (req: Request, res: Response) => {
     this.service
@@ -29,8 +29,8 @@ export class Controller<TModel extends BaseModel> implements IController {
   };
 
   public getSearch = (req: Request, res: Response) => {
-    let data:TModel = Object.assign(new this.modelType(), req.query);
-    // console.log(data)
+    let data: TModel = Object.assign(new this.modelType(), req.query);
+    console.log(data);
     this.service
       .getSearch(data)
       .then(result => res.status(status.OK).json(result))
@@ -38,8 +38,20 @@ export class Controller<TModel extends BaseModel> implements IController {
   };
 
   public create = (req: Request, res: Response) => {
-    const data:TModel = req.body;
+    const data: TModel = req.body;
     this.isValidBody(req, res)
+      .then(() => {
+        this.service
+          .create(data)
+          .then(result => res.status(status.CREATED).json(result))
+          .catch(e => res.status(status.BAD_REQUEST).json(e));
+      })
+      .catch(e => res.status(status.BAD_REQUEST).json(e));
+  };
+
+  public createConllection = (req: Request, res: Response) => {
+    const data: TModel = req.body;
+    this.isValidBodyArray(req, res)
       .then(() => {
         this.service
           .create(data)
@@ -73,14 +85,31 @@ export class Controller<TModel extends BaseModel> implements IController {
 
   public isValidBody = (req: Request, res: Response) => {
     return new Promise((resolve, reject) => {
-      const data: TModel =  new this.modelType();
+      const data: TModel = new this.modelType();
       Object.assign(data, req.body);
       validate(data).then(errors => {
         if (errors.length > 0) {
           return reject(errors);
-      } else {
+        } else {
           return resolve();
         }
+      });
+    });
+  };
+
+  public isValidBodyArray = (req: Request, res: Response) => {
+    return new Promise((resolve, reject) => {
+      const body: any[] = req.body;
+      body.forEach((obj: TModel, index, array) => {
+        const data: TModel = new this.modelType();
+        Object.assign(data, obj);
+        validate(data).then(errors => {
+          if (errors.length > 0) {
+            return reject(errors);
+          } else if (index === array.length - 1) {
+            return resolve();
+          }
+        });
       });
     });
   };
