@@ -1,15 +1,15 @@
+import * as csrf from 'csurf'
 import * as morgan from 'morgan';
 import * as express from 'express';
 import { Application } from 'express';
 import * as bodyParser from 'body-parser';
-import * as csrf from 'csurf'
 import * as cookieParser from 'cookie-parser';
 
 import Routes from '../api/routes/routes.intance';
 
+import { config } from './config';
 import { interceptor } from '../api/util/interceptor';
 import { errorHandlerApi } from '../api/util/errorHandlerApi';
-import { config } from './config';
 
 class Api {
     public express: Application;
@@ -25,7 +25,7 @@ class Api {
         this.express.use(bodyParser.json());
         this.express.use(errorHandlerApi);
         this.express.use(cookieParser(config.secret))
-        this.express.use(csrf({ cookie: true }))
+        // this.express.use(csrf({ cookie: true }))
         this.express.use(interceptor);
         this.router(this.express);
     }
