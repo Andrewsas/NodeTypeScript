@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { config } from '../../config/config';
 
 export function verifyJWT(req, res, next) {
     console.log(`verifica token`)
@@ -6,11 +7,13 @@ export function verifyJWT(req, res, next) {
     if (!token) { 
         return res.status(401).send('no.token.provided');
     } else { 
-        jwt.verify(token, process.env.SECRET, function(err, decoded) {
+        jwt.verify(token, config.secret, function(err, decoded) {
     
-        if (err)  
+        if (err) {
             return res.status(500).send('failed.authenticate.token');
-        
+        } else {
+            return res.status(500).json(decoded)
+        }
         next();
     });
   }

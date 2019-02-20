@@ -12,10 +12,6 @@ export class UsuarioModel extends AccountModel {
     @Min(0)
     @Max(100)
     idade: number;
-
-    @IsString()
-    @MinLength(6)
-    senha: string;
     
     get env () {
         return 'usuario';

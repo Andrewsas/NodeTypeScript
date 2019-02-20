@@ -1,13 +1,13 @@
-import { Service } from './base/service';
-import { AccountModel } from '../models/account.model';
+import { UsuarioModel } from '../models/usuario.model';
+import { Application } from 'express-serve-static-core';
 import { dbConnection } from '../../config/dbConnection';
 
 export class AccountBO {
     
-    private collection: string = new AccountModel().env;
+    private collection: string = new UsuarioModel().env;
     private connection: any = dbConnection();  
 
-    constructor (app) {}
+    constructor (app: Application) {}
 
     public login = (data: any) => {
         return new Promise((resolve, reject) => {

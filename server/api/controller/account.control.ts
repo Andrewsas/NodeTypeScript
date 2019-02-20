@@ -1,5 +1,8 @@
+import * as jwt from 'jsonwebtoken';
 import * as status from 'http-status';
 import { validate } from 'class-validator';
+import { config } from '../../config/config';
+
 import { AccountBO } from '../services/accountBO';
 import { AccountModel } from '../models/account.model';
 import { Application, Request, Response } from 'express';
@@ -18,7 +21,15 @@ export class AccountControl {
       .then(() => {
         this.service
           .login(data)
-          .then(result => res.status(status.OK).json(result))
+          .then((result: AccountModel) => {
+            if (result) {
+              const token = jwt.sign({ _id: result._id }, config.secret, {expiresIn: 300});
+              res.setHeader('token', token);
+              res.status(status.OK).json(result);
+            } else {
+              res.status(status.BAD_REQUEST).send('login.notfound');
+            }
+          })
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       })
       .catch(e => res.status(status.BAD_REQUEST).json(e));

@@ -24,7 +24,7 @@ export class Routes {
         app.route(`/${path}/:id`).get(verifyJWT, (req: Request, res: Response) => {
             this.controller.getOne(req, res)    
         });
-        app.route(`/${path}`).post(verifyJWT, (req: Request, res: Response) => {
+        app.route(`/${path}`).post((req: Request, res: Response) => {
             this.controller.create(req, res)    
         });
         app.route(`/${path}/collection`).post(verifyJWT, (req: Request, res: Response) => {
