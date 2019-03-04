@@ -8,12 +8,16 @@ import { Service } from 'api/services/base/service';
 import { BaseModel } from 'api/models/base/base.model';
 
 export class Controller<TModel extends BaseModel> implements IController {
-  constructor(private service: Service, public modelType: new () => TModel) {}
+  constructor(private service: Service, public modelType: new (data?: TModel, detalhe?: Boolean) => TModel) {}
 
   public getAll = (req: Request, res: Response) => {
     this.service
       .getAll()
-      .then(result => res.status(status.OK).json(result))
+      .then((result: TModel[]) => res.status(status.OK).json(result.map(
+        (item: TModel) => {
+          return new this.modelType(item, false);
+        }
+      )))
       .catch(e => res.status(status.BAD_REQUEST).json(e));
   };
 
@@ -23,7 +27,7 @@ export class Controller<TModel extends BaseModel> implements IController {
     } else {
       this.service
         .getOne(req.params.id)
-        .then(result => res.status(status.OK).json(result))
+        .then((result: TModel[]) => res.status(status.OK).json(new this.modelType(result[0], true)))        
         .catch(e => res.status(status.BAD_REQUEST).json(e));
     }
   };
@@ -33,29 +37,45 @@ export class Controller<TModel extends BaseModel> implements IController {
     console.log(data);
     this.service
       .getSearch(data)
-      .then(result => res.status(status.OK).json(result))
+      .then((result: TModel[]) => res.status(status.OK).json(result.map(
+        (item: TModel) => {
+          return new this.modelType(item, false);
+        }
+      ))) 
       .catch(e => res.status(status.BAD_REQUEST).json(e));
   };
 
   public create = (req: Request, res: Response) => {
-    const data: TModel = req.body;
+    const data: TModel = new this.modelType(req.body);
+          data.dt_create = new Date;
+          data.dt_update = new Date;
     this.isValidBody(req, res)
       .then(() => {
         this.service
           .create(data)
-          .then(result => res.status(status.CREATED).json(result))
+          .then((result: any)  => res.status(status.CREATED).json(new this.modelType(result.ops[0], true)))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       })
       .catch(e => res.status(status.BAD_REQUEST).json(e));
   };
 
   public createConllection = (req: Request, res: Response) => {
-    const data: TModel = req.body;
+    const data: TModel[] = (<TModel[]>(req.body)).map(
+      (item: TModel) => {
+        item.dt_create = new Date;
+        item.dt_update = new Date;
+        return new this.modelType(item);
+      }
+    );
     this.isValidBodyArray(req, res)
       .then(() => {
         this.service
           .create(data)
-          .then(result => res.status(status.CREATED).json(result))
+          .then((result: any) => res.status(status.CREATED).json(result.ops.map(
+            (item: TModel) => {
+              return new this.modelType(item, false);
+            }
+          )))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       })
       .catch(e => res.status(status.BAD_REQUEST).json(e));
@@ -65,8 +85,13 @@ export class Controller<TModel extends BaseModel> implements IController {
     if (!this.isValidId(req.params.id)) {
       res.status(status.BAD_REQUEST).json();
     } else {
+      const data = this.updateParameter(req.body);
+            data.dt_update = new Date;
+      if (data) {
+        res.status(status.NO_CONTENT).json();
+      }
       this.service
-        .update(req.params.id, req.body)
+        .update(req.params.id, data)
         .then(() => res.status(status.NO_CONTENT).json())
         .catch(e => res.status(status.BAD_REQUEST).json(e));
     }
@@ -113,4 +138,17 @@ export class Controller<TModel extends BaseModel> implements IController {
       });
     });
   };
+
+  private updateParameter(data: any): TModel {
+    const newModel: TModel = new this.modelType(data, true);
+    let params: TModel = new this.modelType(data, true);
+    Object.keys(newModel).forEach((key) => {
+      if (data[key]) {
+         params[key] = data[key]; 
+      } else {
+        delete params[key];
+      }
+    });
+    return params;
+  }
 }

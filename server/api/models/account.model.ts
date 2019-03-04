@@ -14,4 +14,7 @@ export class AccountModel extends BaseModel {
         return 'login';
     }
 
+    public constructor(account?: AccountModel) {
+        super(account)
+    }
 }

@@ -7,7 +7,7 @@ export class AccountRoute {
     private controller: AccountControl; 
     private path: string = new AccountModel().env;
 
-    constructor(app: Application) {
+    constructor(app: Application, permiteAll?: Boolean) {
         this.controller = new AccountControl(app);    
         this.getRoutes(app, this.path);    
     }

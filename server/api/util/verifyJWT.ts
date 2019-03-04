@@ -11,9 +11,10 @@ export function verifyJWT(req, res, next) {
     
         if (err) {
             return res.status(500).send('failed.authenticate.token');
-        } else {
-            return res.status(500).json(decoded)
-        }
+        } 
+        // else {
+        //     return res.status(500).json(decoded)
+        // }
         next();
     });
   }

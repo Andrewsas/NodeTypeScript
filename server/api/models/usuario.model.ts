@@ -12,9 +12,27 @@ export class UsuarioModel extends AccountModel {
     @Min(0)
     @Max(100)
     idade: number;
+
+    autorizacao: any;
     
     get env () {
         return 'usuario';
+    }
+
+
+    public constructor(user?: UsuarioModel, detalhes?: Boolean) {
+        super(user);
+
+        if (user) {
+            this.nome = user.nome;
+            this.idade = user.idade;
+            this.username = user.username;
+            
+            if (detalhes) {
+                this.autorizacao = user.autorizacao;
+                this.password = user.password
+            }
+        }
     }
 
 }

@@ -23,7 +23,7 @@ export class AccountControl {
           .login(data)
           .then((result: AccountModel) => {
             if (result) {
-              const token = jwt.sign({ _id: result._id }, config.secret, {expiresIn: 300});
+              const token = jwt.sign({ _id: result._id }, config.secret, {expiresIn: 60 * 60 * 24});
               res.setHeader('token', token);
               res.status(status.OK).json(result);
             } else {
