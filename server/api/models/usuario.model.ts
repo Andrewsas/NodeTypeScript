@@ -12,8 +12,6 @@ export class UsuarioModel extends AccountModel {
     @Min(0)
     @Max(100)
     idade: number;
-
-    autorizacao: any;
     
     get env () {
         return 'usuario';

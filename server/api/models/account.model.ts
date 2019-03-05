@@ -9,6 +9,8 @@ export class AccountModel extends BaseModel {
     @IsString()
     @MinLength(6)
     password: string;
+
+    autorizacao: any;
     
     get env () {
         return 'login';

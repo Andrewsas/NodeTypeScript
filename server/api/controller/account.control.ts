@@ -4,6 +4,7 @@ import { validate } from 'class-validator';
 import { config } from '../../config/config';
 
 import { AccountBO } from '../services/accountBO';
+import { UsuarioModel } from '../models/usuario.model';
 import { AccountModel } from '../models/account.model';
 import { Application, Request, Response } from 'express';
 
@@ -21,11 +22,12 @@ export class AccountControl {
       .then(() => {
         this.service
           .login(data)
-          .then((result: AccountModel) => {
-            if (result) {
-              const token = jwt.sign({ _id: result._id }, config.secret, {expiresIn: 60 * 60 * 24});
+          .then((result: UsuarioModel[]) => {
+            if (result.length) {
+              const user: any = {_id: result[0]._id, autorizacao: result[0].autorizacao};
+              const token = jwt.sign({ data: user }, config.secret, {expiresIn: 60 * 60 * 24});
               res.setHeader('token', token);
-              res.status(status.OK).json(result);
+              res.status(status.OK).json(new UsuarioModel(result[0]));
             } else {
               res.status(status.BAD_REQUEST).send('login.notfound');
             }

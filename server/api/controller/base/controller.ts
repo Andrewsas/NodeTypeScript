@@ -34,7 +34,6 @@ export class Controller<TModel extends BaseModel> implements IController {
 
   public getSearch = (req: Request, res: Response) => {
     let data: TModel = Object.assign(new this.modelType(), req.query);
-    console.log(data);
     this.service
       .getSearch(data)
       .then((result: TModel[]) => res.status(status.OK).json(result.map(
@@ -46,7 +45,7 @@ export class Controller<TModel extends BaseModel> implements IController {
   };
 
   public create = (req: Request, res: Response) => {
-    const data: TModel = new this.modelType(req.body);
+    const data: TModel = new this.modelType(req.body, true);
           data.dt_create = new Date;
           data.dt_update = new Date;
     this.isValidBody(req, res)
@@ -64,7 +63,7 @@ export class Controller<TModel extends BaseModel> implements IController {
       (item: TModel) => {
         item.dt_create = new Date;
         item.dt_update = new Date;
-        return new this.modelType(item);
+        return new this.modelType(item, true);
       }
     );
     this.isValidBodyArray(req, res)
@@ -73,7 +72,7 @@ export class Controller<TModel extends BaseModel> implements IController {
           .create(data)
           .then((result: any) => res.status(status.CREATED).json(result.ops.map(
             (item: TModel) => {
-              return new this.modelType(item, false);
+              return new this.modelType(item, true);
             }
           )))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
