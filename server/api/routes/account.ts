@@ -1,6 +1,7 @@
+import { Application, Request, Response } from 'express';
+
 import { AccountModel } from '../models/account.model';
 import { AccountControl } from '../controller/account.control';
-import { Application, Request, Response } from 'express';
 
 export class AccountRoute {
 

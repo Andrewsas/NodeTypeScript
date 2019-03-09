@@ -4,13 +4,13 @@ import {IsInt, Length, Min, Max, IsString, MinLength} from "class-validator";
 // import {validate, Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator";
 
 export class UsuarioModel extends AccountModel {
-    @MinLength(10)
-    @IsString()
+    @MinLength(10, {message: 'nome.length.small'})
+    @IsString({message: 'nome.is.string'})
     nome: string;
     
-    @IsInt()
-    @Min(0)
-    @Max(100)
+    @IsInt({message: 'idade.is.int'})
+    @Min(0, {message: 'idade.min'})
+    @Max(100, {message: 'idade.max'})
     idade: number;
     
     get env () {
@@ -27,10 +27,9 @@ export class UsuarioModel extends AccountModel {
             this.username = user.username;
             
             if (detalhes) {
-                this.autorizacao = user.autorizacao;
-                this.password = user.password
+                user.autorizacao ?  this.autorizacao = user.autorizacao : () => {} ;
+                user.password ?  this.password = user.password : () => {} ;
             }
         }
     }
-
 }

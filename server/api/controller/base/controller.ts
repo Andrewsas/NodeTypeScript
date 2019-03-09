@@ -55,7 +55,7 @@ export class Controller<TModel extends BaseModel> implements IController {
           .then((result: any)  => res.status(status.CREATED).json(new this.modelType(result.ops[0], true)))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       })
-      .catch(e => res.status(status.BAD_REQUEST).json(e));
+      .catch((e: any[]) => res.status(status.BAD_REQUEST).json(e[0]));
   };
 
   public createConllection = (req: Request, res: Response) => {
@@ -77,7 +77,7 @@ export class Controller<TModel extends BaseModel> implements IController {
           )))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       })
-      .catch(e => res.status(status.BAD_REQUEST).json(e));
+      .catch((e: any[]) => res.status(status.BAD_REQUEST).json(e[0]));
   };
 
   public update = (req: Request, res: Response) => {
