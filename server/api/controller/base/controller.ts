@@ -86,9 +86,6 @@ export class Controller<TModel extends BaseModel> implements IController {
     } else {
       const data = this.updateParameter(req.body);
             data.dt_update = new Date;
-      if (data) {
-        res.status(status.NO_CONTENT).json();
-      }
       this.service
         .update(req.params.id, data)
         .then(() => res.status(status.NO_CONTENT).json())
