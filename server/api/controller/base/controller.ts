@@ -84,7 +84,7 @@ export class Controller<TModel extends BaseModel> implements IController {
     if (!this.isValidId(req.params.id)) {
       res.status(status.BAD_REQUEST).json();
     } else {
-      const data = this.updateParameter(req.body);
+      const data: TModel = new this.modelType(req.body, true);
             data.dt_update = new Date;
       this.service
         .update(req.params.id, data)
@@ -135,6 +135,7 @@ export class Controller<TModel extends BaseModel> implements IController {
     });
   };
 
+  // usar no front
   private updateParameter(data: any): TModel {
     const newModel: TModel = new this.modelType(data, true);
     let params: TModel = new this.modelType(data, true);

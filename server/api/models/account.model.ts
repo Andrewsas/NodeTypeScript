@@ -1,5 +1,6 @@
 import { BaseModel } from "./base/base.model";
 import {IsInt, Length, Min, Max, IsString, MinLength} from "class-validator";
+import { AutorizacaoModel } from "./autorizacao.model";
 
 export class AccountModel extends BaseModel {
     @MinLength(3, {message: 'username.length.small'})
@@ -10,13 +11,10 @@ export class AccountModel extends BaseModel {
     @MinLength(6, {message: 'password.length.small'})
     password: string;
 
-    autorizacao: any;
+    autorizacao: AutorizacaoModel;
     
     get env () {
         return 'login';
     }
 
-    public constructor(account?: AccountModel) {
-        super(account)
-    }
 }

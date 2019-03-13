@@ -15,9 +15,10 @@ export class AutorizacaoModel extends BaseModel {
 
     public constructor(auto?: AutorizacaoModel, detalhes?: Boolean) {
         super(auto);
+        
         if(auto) {
-            this.perfil = auto.perfil,
-            this.autorizacoes = auto.autorizacoes
+            auto.perfil ? this.perfil = auto.perfil : () => {};
+            auto.autorizacoes  ?this.autorizacoes = auto.autorizacoes  : () => {};
         }
     }
 

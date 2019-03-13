@@ -1,6 +1,7 @@
 import { AccountModel } from "./account.model";
 
 import {IsInt, Length, Min, Max, IsString, MinLength} from "class-validator";
+import { AutorizacaoModel } from "./autorizacao.model";
 // import {validate, Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max} from "class-validator";
 
 export class UsuarioModel extends AccountModel {
@@ -20,15 +21,14 @@ export class UsuarioModel extends AccountModel {
 
     public constructor(user?: UsuarioModel, detalhes?: Boolean) {
         super(user);
-
         if (user) {
-            this.nome = user.nome;
-            this.idade = user.idade;
-            this.username = user.username;
-            
+            user.nome ? this.nome = user.nome : () => {};
+            user.idade ? this.idade = user.idade : () => {};
+            user.username ? this.username = user.username : () => {};
+
             if (detalhes) {
-                user.autorizacao ?  this.autorizacao = user.autorizacao : () => {} ;
-                user.password ?  this.password = user.password : () => {} ;
+                user.autorizacao ? this.autorizacao = new AutorizacaoModel(user.autorizacao) : () => {};
+                user.password ? this.password = user.password : () => {};
             }
         }
     }
