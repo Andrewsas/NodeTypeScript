@@ -1,12 +1,9 @@
 module.exports = {
-    env: 'test',
-    db: 'teste',
-    dialect: 'postgres',
-    username: 'postgres',
-    password: 'postgres',
-    host: 'localhost',
-    servePort: 3000,
-    pgPort: 5432,
-    dbURL: 'postgres//postgres:postgres@localhost:5432/teste',
-    secret: 'S3cr3t'
+    env: 'production',
+    db: process.env.DBURL || 'mongo',
+    dbURL: process.env.DBURL || 'mongodb://localhost:27017/mongo',
+    secret: process.env.SECRET ||'S3cr3t',
+    servePort: process.env.PORT || 3000,
+    origin: process.env.DOMAIN || '*',
+    pathUpload: process.env.UPLOAD || './server/uploads/'
 }
