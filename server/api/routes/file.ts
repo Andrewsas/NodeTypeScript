@@ -21,12 +21,15 @@ export class FileRoute {
 
     getRoutes(app: Application, path: string): void {
         app.route(`/${path}`).post(this.veirificaToken, (req: Request, res: Response) => {
-            console.log('aqui')
             this.controller.create(req, res)    
         });
 
         app.route(`/${path}/:id`).get(this.veirificaToken, (req: Request, res: Response) => {
             this.controller.getOne(req, res)    
+        });
+
+        app.route(`/${path}/:id`).delete(this.veirificaToken, (req: Request, res: Response) => {
+            this.controller.delete(req, res)    
         });
     }
 }

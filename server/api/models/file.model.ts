@@ -9,6 +9,7 @@ export class FileModel extends BaseModel {
     name: string;
     type: string;
     size: string;
+    path: string;
 
     public constructor (file?: FileModel, detalhes?: Boolean) {
         super(file);
@@ -16,6 +17,7 @@ export class FileModel extends BaseModel {
             file.name ? this.name = file.name : () => {};
             file.type ? this.type = file.type : () => {};
             file.size ? this.size = file.size : () => {};
+            file.path ? this.path = file.path : () => {};
         }
     }
 }

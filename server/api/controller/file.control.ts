@@ -20,31 +20,36 @@ export class FileControl {
     if (!this.isValidId(req.params.id)) {
       res.status(status.BAD_REQUEST).json();
     } else {
-      fs.readFile('./server/uploads/'+ req.params.id, (erro, content) => {
-          if (erro){
-              res.status(status.NOT_FOUND).json(erro);
-              return;
-          }
-          res.writeHead(status.OK, {'content-type': 'imagem/jpg'});
-          res.end(content);
-      });
-      // this.service
-      //   .getFile(req.params.id)
-      //   .then((result: FileModel[]) => res.status(status.OK).json(new this.modelType(result[0], true)))        
-      //   .catch(e => res.status(status.BAD_REQUEST).json(e));
+      this.service
+        .getOne(req.params.id)
+        .then((result: FileModel[]) => {
+          const file = new FileModel(result[0], true);
+          fs.readFile(`./server/uploads/${file.path}`, (erro, content) => {
+            if (erro){
+                res.status(status.NOT_FOUND).json(erro);
+            } else {
+              res.writeHead(status.OK, { 'content-type': file.type });
+              res.end(content);
+            }
+          });
+        })        
+        .catch(e => res.status(status.BAD_REQUEST).json(e));
     }
   };
 
   public create = (req: any, res: Response) => {
     const data: FileModel = new FileModel();
-          data._id = new ObjectId();
           data.dt_create = new Date;
           data.dt_update = new Date;
 
-    const url_file = data._id;
-    res.status(status.BAD_REQUEST).json(req.files)
-    const path_orgin = req.files.path;
-    const path_destino = './server/uploads/' + url_file;
+    const file: any = req.files.file;
+          data.name = file.name;
+          data.type = file.type;
+          data.size = file.size;
+          data.path =  `${new Date().getTime()}_${file.originalFilename}`;
+    
+    const path_orgin = file.path;
+    const path_destino = `./server/uploads/${data.path}`;
 
     fs.rename(path_orgin, path_destino, (err) => {
       if(err){
@@ -52,15 +57,39 @@ export class FileControl {
         return;
       } else {
         this.service
-          .setFile(data)
-          .then((result: any)  => {
-              res.status(status.CREATED).json(new this.modelType(result.ops[0], true))
-          })
+          .create(data)
+          .then((result: any) => res.status(status.OK).json(new FileModel(result.ops[0], true)))
           .catch(e => res.status(status.BAD_REQUEST).json(e));
       }
     });
   };
 
+  public delete = (req: Request, res: Response) => {
+    if (!this.isValidId(req.params.id)) {
+      res.status(status.BAD_REQUEST).json();
+    } else {
+      this.service
+      .getOne(req.params.id)
+      .then((result: FileModel[]) => {
+        const file = new FileModel(result[0], true);
+        this.service.delete(req.params.id).then(() => {
+          fs.stat(`./server/uploads/${file.path}`, (err, stats) => {
+            if (err) {
+                return console.error(err);
+            } else {
+              fs.unlink(`./server/uploads/${file.path}`,function(err){
+                  if(err) return console.log(err);
+                  else res.status(status.NO_CONTENT).json();
+              });  
+            }
+          });
+        })
+        .catch(e => res.status(status.BAD_REQUEST).json(e));
+      })        
+      .catch(e => res.status(status.BAD_REQUEST).json(e));
+    }
+  };
+  
   public isValidId = id => {
     return ObjectId.isValid(id);
   };
