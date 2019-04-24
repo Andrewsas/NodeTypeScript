@@ -7,6 +7,7 @@ import { AccountBO } from '../services/accountBO';
 import { UsuarioModel } from '../models/usuario.model';
 import { AccountModel } from '../models/account.model';
 import { Application, Request, Response } from 'express';
+import { SendEmail } from '../../api/util/sendEmail';
 
 export class AccountControl {
   
@@ -28,6 +29,9 @@ export class AccountControl {
               const token = jwt.sign({ data: user }, config.secret, {expiresIn: 60 * 60 * 24});
               res.setHeader('token', token);
               res.status(status.OK).json(new UsuarioModel(result[0]));
+              const template = require('../util/templates/templates.html');
+              const email: any = new SendEmail(['s.andrew.santos@gmail.com'], 'Registro de Login', template )
+              email.sendMail();
             } else {
               res.status(status.BAD_REQUEST).send('login.notfound');
             }
