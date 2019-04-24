@@ -37,6 +37,10 @@ export class AccountControl {
       .catch(e => res.status(status.BAD_REQUEST).json(e));
   };
 
+  public recoverySenha() {
+    this.service.recoverySenha();
+  }
+
   public isValidBody = (req: Request, res: Response) => {
     return new Promise((resolve, reject) => {
       const data: AccountModel = new AccountModel();
