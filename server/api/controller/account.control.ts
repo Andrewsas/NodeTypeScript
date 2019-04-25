@@ -29,8 +29,7 @@ export class AccountControl {
               const token = jwt.sign({ data: user }, config.secret, {expiresIn: 60 * 60 * 24});
               res.setHeader('token', token);
               res.status(status.OK).json(new UsuarioModel(result[0]));
-              const template = require('../util/templates/templates.html');
-              const email: any = new SendEmail(['s.andrew.santos@gmail.com'], 'Registro de Login', template )
+              const email: any = new SendEmail(['s.andrew.santos@gmail.com'], 'Registro de Login', 'template.html', true )
               email.sendMail();
             } else {
               res.status(status.BAD_REQUEST).send('login.notfound');

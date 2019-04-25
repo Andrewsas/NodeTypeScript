@@ -1,5 +1,4 @@
 import * as fs  from 'fs';
-import { config } from '../../config/config';
 import { ObjectId } from 'mongodb';
 import * as status from 'http-status';
 import { Request, Response } from 'express';
