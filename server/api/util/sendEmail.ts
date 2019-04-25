@@ -58,12 +58,13 @@ export class SendEmail {
 
     private getTemplate(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            fs.readFile(`./server/api/util/templates/${this.pathOrMessage}`, (erro, html) => {
+
+            fs.readFile(`./server/api/util/templates/${this.pathOrMessage}`, {encoding: 'utf-8'}, (erro, html) => {
                 if (erro) {
                     console.log('Template not found');
                     reject();
                 } else {
-                    const template: string = <string> handlebars.compile(html)(this.obj);
+                    const template: string = handlebars.compile(html)(this.obj);
                     resolve(template);
                 }
             });

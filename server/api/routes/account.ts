@@ -17,5 +17,9 @@ export class AccountRoute {
         app.route(`/${path}`).post((req: Request, res: Response) => {
             this.controller.login(req, res)    
         });
+
+        app.route(`/recovery`).post((req: Request, res: Response) => {
+            this.controller.recoverySenha(req, res)    
+        });
     }
 }

@@ -1,4 +1,4 @@
-import { SendEmail } from 'api/util/send';
+import { SendEmail } from '../util/sendEmail';
 import { UsuarioModel } from '../models/usuario.model';
 import { Application } from 'express-serve-static-core';
 import { dbConnection } from '../../config/dbConnection';
@@ -6,11 +6,8 @@ import { dbConnection } from '../../config/dbConnection';
 export class AccountBO {
   private collection: string = new UsuarioModel().env;
   private connection: any = dbConnection();
-  private sendEmail: SendEmail;
-
-  constructor(app: Application) {
-    this.sendEmail = new SendEmail();
-  }
+  
+  constructor(app: Application) {  }
 
   public login = (data: any) => {
     return new Promise((resolve, reject) => {
@@ -29,6 +26,7 @@ export class AccountBO {
   };
 
   public recoverySenha() {
-    this.sendEmail.enviaEmail();
+    const email: any = new SendEmail(['s.andrew.santos@gmail.com'], 'Registro de Login', 'template.html', true )
+    email.sendMail();
   }
 }

@@ -19,8 +19,9 @@ class Api {
         this.express = express();
         this.middleware();
     }
-
+    
     middleware(): void {
+        this.express.use("/public", express.static(__dirname + '/../public'));
         this.express.use(morgan('dev'));
         this.express.use(bodyParser.urlencoded({ extended: true }));
         this.express.use(bodyParser.json());
