@@ -4,6 +4,7 @@ module.exports = {
     dbURL: 'mongodb://localhost:27017/teste',
     secret: 'S3cr3t',
     servePort: 3000,
+    expireToekn: 60 * 60 * 1,
     origin: '*',
     pathUpload: './server/uploads/',
     email: {

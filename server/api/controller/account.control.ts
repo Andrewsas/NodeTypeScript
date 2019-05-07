@@ -25,7 +25,7 @@ export class AccountControl {
           .then((result: UsuarioModel[]) => {
             if (result.length) {
               const user: any = {_id: result[0]._id, autorizacao: result[0].autorizacao};
-              const token = jwt.sign({ data: user }, config.secret, {expiresIn: 60 * 60 * 24});
+              const token = jwt.sign({ data: user }, config.secret, {expiresIn: config.expireToekn});
               res.setHeader('token', token);
               res.status(status.OK).json(new UsuarioModel(result[0]));
             } else {
