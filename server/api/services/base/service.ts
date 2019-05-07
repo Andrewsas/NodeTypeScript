@@ -17,6 +17,8 @@ export class Service implements IService {
           }
         });
         connection.close();
+      }).catch(err => {
+        return reject(err);
       });
     });
   };
@@ -33,7 +35,9 @@ export class Service implements IService {
           }
         });
         connection.close();
-      });
+      }).catch(err => {
+        return reject(err);
+      });;
     });
   };
 
@@ -47,6 +51,8 @@ export class Service implements IService {
           } else {
             return reject(error);
           }
+        }).catch(err => {
+          return reject(err);
         });
         connection.close();
       });
@@ -63,6 +69,8 @@ export class Service implements IService {
           } else {
             return reject(error);
           }
+        }).catch(err => {
+          return reject(err);
         });
         connection.close();
       });
@@ -83,8 +91,9 @@ export class Service implements IService {
             } else {
               return reject(error);
             }
-          }
-        );
+          }).catch(err => {
+            return reject(err);
+          });
         connection.close();
       });
     });
@@ -100,6 +109,8 @@ export class Service implements IService {
           } else {
             return reject(error);
           }
+        }).catch(err => {
+          return reject(err);
         });
         connection.close();
       });

@@ -33,7 +33,7 @@ export class FileControl {
             }
           });
         })        
-        .catch(e => res.status(status.BAD_REQUEST).json(e));
+        .catch(e => res.status(status.INTERNAL_SERVER_ERROR).json(e));
     }
   };
 
@@ -69,7 +69,7 @@ export class FileControl {
         this.service
           .create(data)
           .then((result: any) => res.status(status.OK).json(new FileModel(result.ops[0], true)))
-          .catch(e => res.status(status.BAD_REQUEST).json(e));
+          .catch(e => res.status(status.INTERNAL_SERVER_ERROR).json(e));
       }
     });
   };
@@ -94,9 +94,9 @@ export class FileControl {
             }
           });
         })
-        .catch(e => res.status(status.BAD_REQUEST).json(e));
+        .catch(e => res.status(status.INTERNAL_SERVER_ERROR).json(e));
       })        
-      .catch(e => res.status(status.BAD_REQUEST).json(e));
+      .catch(e => res.status(status.INTERNAL_SERVER_ERROR).json(e));
     }
   };
   
