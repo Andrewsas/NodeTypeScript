@@ -3,9 +3,9 @@ import { ObjectId } from 'mongodb';
 import * as status from 'http-status';
 import { Request, Response } from 'express';
 
-
-import { FileModel } from '../models/file.model';
 import { FileBO } from '../services/fileBO';
+import { config } from '../../config/config';
+import { FileModel } from '../models/file.model';
 
 export class FileControl {
 
@@ -49,12 +49,22 @@ export class FileControl {
           data.path =  `${new Date().getTime()}_${file.originalFilename}`;
     
     const path_orgin = file.path;
-    const path_destino = `./server/uploads/${data.path}`;
+    const path_destino = `${config.pathUpload}${data.path}`;
+
+    if (!fs.existsSync(config.pathUpload)) {
+      fs.mkdir(config.pathUpload, (e) => {
+        if(e) {
+          console.log(e);
+          res.status(status.BAD_REQUEST).json();
+          return;
+        }
+      });
+    }
 
     fs.rename(path_orgin, path_destino, (err) => {
       if(err){
         res.status(status.BAD_REQUEST).json();
-        return;
+        console.log(err);
       } else {
         this.service
           .create(data)
