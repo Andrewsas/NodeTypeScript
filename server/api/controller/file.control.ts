@@ -24,7 +24,7 @@ export class FileControl {
         .getOne(req.params.id)
         .then((result: FileModel[]) => {
           const file = new FileModel(result[0], true);
-          fs.readFile(`./server/uploads/${file.path}`, (erro, content) => {
+          fs.readFile(`${config.pathUpload}${file.path}`, (erro, content) => {
             if (erro){
                 res.status(status.NOT_FOUND).json(erro);
             } else {
@@ -83,11 +83,11 @@ export class FileControl {
       .then((result: FileModel[]) => {
         const file = new FileModel(result[0], true);
         this.service.delete(req.params.id).then(() => {
-          fs.stat(`./server/uploads/${file.path}`, (err, stats) => {
+          fs.stat(`${config.pathUpload}${file.path}`, (err, stats) => {
             if (err) {
                 return console.error(err);
             } else {
-              fs.unlink(`./server/uploads/${file.path}`,function(err){
+              fs.unlink(`${config.pathUpload}${file.path}`,function(err){
                   if(err) return console.log(err);
                   else res.status(status.NO_CONTENT).json();
               });  
