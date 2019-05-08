@@ -5,7 +5,7 @@ module.exports = {
     secret: 'S3cr3t',
     servePort: 3000,
     expireToekn: 60 * 60 * 1,
-    origin: '*',
+    origin: 'http://localhost:4200',
     pathUpload: './server/uploads/',
     email: {
         host: "smtp.mailtrap.io",

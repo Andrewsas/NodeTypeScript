@@ -26,7 +26,7 @@ export class AccountControl {
             if (result.length) {
               const user: any = {_id: result[0]._id, autorizacao: result[0].autorizacao};
               const token = jwt.sign({ data: user }, config.secret, {expiresIn: config.expireToekn});
-              res.setHeader('token', token);
+              res.setHeader('Authorization', token);
               res.status(status.OK).json(new UsuarioModel(result[0]));
             } else {
               res.status(status.BAD_REQUEST).send('login.notfound');

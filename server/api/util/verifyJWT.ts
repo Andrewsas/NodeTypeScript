@@ -12,7 +12,7 @@ export function verifyJWT(req, res, next) {
                 if (err.expiredAt) {
                     const data = jwt.decode(token);
                     const newToken = jwt.sign({ data: data.data }, config.secret, {expiresIn: config.expireToekn});
-                    res.setHeader('token', newToken);
+                    res.setHeader('Authorization', newToken);
                 } else {
                     return res.status(status.INTERNAL_SERVER_ERROR).send('failed.authenticate.token');
                 }
